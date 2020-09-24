@@ -5,9 +5,6 @@ import contacts from './contacts.json';
 // console.log('hello im console log ', contacts.slice(0, 5));
 const shortList = contacts.slice(0, 5);
 
-// let random = contacts[Math.floor(Math.random() * contacts.length)];
-// console.log('random', random);
-
 class ContactList extends React.Component {
   state = {
     celebsList: shortList,
@@ -42,8 +39,18 @@ class ContactList extends React.Component {
     const newList = this.state.celebsList;
 
     newList.sort((a, b) => {
-      return a.popularity > b.popularity ? 1 : -1;
+      return a.popularity > b.popularity ? -1 : 1;
     });
+
+    this.setState((previousState) => ({
+      celebsList: newList,
+    }));
+  };
+
+  deleteContact = (index) => {
+    console.log('index?', index);
+    const newList = this.state.celebsList;
+    newList.splice(index, 1);
 
     this.setState((previousState) => ({
       celebsList: newList,
@@ -71,6 +78,9 @@ class ContactList extends React.Component {
               <th>
                 <h2>Popularity</h2>
               </th>
+              <th>
+                <h2>Delete</h2>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -85,6 +95,11 @@ class ContactList extends React.Component {
                     <b>{contact.name}</b>
                   </td>
                   <td>{roundPopularity}</td>
+                  <td>
+                    <button onClick={() => this.deleteContact(index)}>
+                      Delete
+                    </button>
+                  </td>
                 </tr>
               );
             })}
